@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash download.sh [resolution: 2km | 1km | 500m | 250m] [year, eg: 2012] [day_start: 0-365] [day_end: 0-365] [path: r14c20] [output_dir: data]
+# bash download.sh [resolution: 2km | 1km | 500m | 250m] [year, eg: 2013] [day_start: 0-365] [day_end: 0-365] [path: r14c20] [output_dir: data]
 
 res=$1
 year=$2
@@ -20,7 +20,7 @@ fi
 
 if [ -z "$3" ]; then
   day_start=100
-  day_end=130
+  day_end=160
 fi
 
 if [ -z "$5" ]; then

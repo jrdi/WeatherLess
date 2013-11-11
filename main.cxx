@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
   cv::Mat ImageWeigths  = cv::Mat::zeros(SizeImage.size(), CV_32FC1);
   cv::Mat ImageIndexs   = cv::Mat::zeros(SizeImage.size(), CV_32FC1);
 
+  std::vector<cv::Mat> FinalImages;
   cv::Mat FinalImage(ImageIndexs.size(), CV_8UC3);
 
   for(size_t i = 0; i < ImagePaths.size(); ++i) {
@@ -88,6 +89,20 @@ int main(int argc, char *argv[])
         }
       }
     }
+
+    if(i % 10 == 0 && i != 0) {
+      FinalImages.push_back(FinalImage.clone());
+      ImageWeigths  = cv::Mat::zeros(SizeImage.size(), CV_32FC1);
+      ImageIndexs   = cv::Mat::zeros(SizeImage.size(), CV_32FC1);
+    }
+  }
+
+  size_t size = FinalImages.size();
+
+  std::cout << "Generated " << size << " images." << std::endl;
+
+  for(size_t i = 0; i < size; ++i) {
+    FinalImage += FinalImages[i]/size;
   }
 
   cv::imwrite("final.png", FinalImage);

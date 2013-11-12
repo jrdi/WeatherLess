@@ -79,7 +79,10 @@ int main(int argc, char *argv[])
       for(int col = 0; col < img.cols; ++col) {
         cv::Vec3f RGBPixel = static_cast<cv::Vec3f>( img.at<cv::Vec3b>(row, col) );
 
-        float weight = 1. / (RGBPixel[0]+RGBPixel[1]+RGBPixel[2]);
+        float darkness = 1. / (RGBPixel[0]+RGBPixel[1]+RGBPixel[2]);
+        float diff = std::abs(RGBPixel[0]-RGBPixel[1]) + std::abs(RGBPixel[1]-RGBPixel[2]) + std::abs(RGBPixel[0]-RGBPixel[2]);
+
+        float weight = darkness * (5. + diff);
 
         if(weight > ImageWeigths.at<float>(row, col)) {
           ImageWeigths.at<float>(row, col)  = weight;
@@ -101,6 +104,8 @@ int main(int argc, char *argv[])
 
   std::cout << "Generated " << size << " images." << std::endl;
 
+  FinalImage = cv::Mat::zeros(ImageIndexs.size(), CV_8UC3);
+  
   for(size_t i = 0; i < size; ++i) {
     FinalImage += FinalImages[i]/size;
   }
